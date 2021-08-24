@@ -10,6 +10,11 @@ export default (state = {}, action) => {
           id: id
         }
       });
+    case 'DELETE_TICKET':
+      let newState = { ...state };
+      delete newState[id];
+      console.log(newState);
+      return newState;
     default:
       return state;
   }
