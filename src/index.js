@@ -3,11 +3,11 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './components/App';
 import { createStore } from 'redux';
-import reducer from './reducers/ticket-list-reducer';
+import rootReducer from './reducers/index';
 import { Provider } from 'react-redux';
 import reportWebVitals from './reportWebVitals';
 
-const store = createStore(reducer);
+const store = createStore(rootReducer);
 store.subscribe(() => 
   console.log(store.getState())
 );

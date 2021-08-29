@@ -10,7 +10,6 @@ class TicketControl extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      formVisibleOnPage: false,
       selectedTicket: null,
       editing: false
     };
@@ -19,30 +18,37 @@ class TicketControl extends React.Component {
   handleClick = () => {
     if (this.state.selectedTicket != null) {
       this.setState({
-        formVisibleOnPage: false,
         selectedTicket: null,
         editing: false
       });
     } 
     else {
-      this.setState(prevState => ({
-        formVisibleOnPage: !prevState.formVisibleOnPage
-      }));
+      const { dispatch } = this.props;
+      const action = {
+        type: 'TOGGLE_FORM'
+      };
+      dispatch(action);
     }
   }
 
   handleAddingNewTicketToList = (newTicket) => {
     const { dispatch } = this.props;
     const { id, names, location, issue } = newTicket;
-    const action = {
+    
+    const addTicketAction = {
       type: 'ADD_TICKET',
       id: id,
       names : names,
       location: location,
       issue: issue
-    }
-    dispatch(action);
-    this.setState({formVisibleOnPage: false});
+    };
+    dispatch(addTicketAction);
+    
+    const toggleFormAction = {
+      type: 'TOGGLE_FORM'
+    };
+    dispatch(toggleFormAction);
+    // this.setState({formVisibleOnPage: false});
   }
 
   handleChangingSelectedTicket = (id) => {
@@ -99,7 +105,7 @@ class TicketControl extends React.Component {
                                 onClickingEdit = {this.handleEditClick} />
       buttonText = "Return to Ticket List";
     }
-    else if (this.state.formVisibleOnPage) {
+    else if (this.props.formVisibleOnPage) {
       currentlyVisibleState = <NewTicketForm onNewTicketCreation={this.handleAddingNewTicketToList}/>
       buttonText = "Return to Ticket List";
     } 
@@ -117,15 +123,16 @@ class TicketControl extends React.Component {
 }
 
 TicketControl.propTypes = {
-  masterTicketList: PropTypes.object
+  masterTicketList: PropTypes.object,
+  formVisibleOnPage: PropTypes.bool
 };
 
 const mapStateToProps = state =>   {
   return {
-    masterTicketList: state
+    masterTicketList: state.masterTicketList,
+    formVisibleOnPage: state.formVisibleOnPage
   };
 }
-
 
 TicketControl = connect(mapStateToProps)(TicketControl);
 
