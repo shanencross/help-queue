@@ -33,20 +33,10 @@ class TicketControl extends React.Component {
   handleAddingNewTicketToList = (newTicket) => {
     const { dispatch } = this.props;
     const addTicketAction = a.addTicket(newTicket)
-    // const { id, names, location, issue } = newTicket;
-    
-    // const addTicketAction = {
-    //   type: 'ADD_TICKET',
-    //   id: id,
-    //   names : names,
-    //   location: location,
-    //   issue: issue
-    // };
     dispatch(addTicketAction);
     
     const toggleFormAction = a.toggleForm()
     dispatch(toggleFormAction);
-    // this.setState({formVisibleOnPage: false});
   }
 
   handleChangingSelectedTicket = (id) => {
@@ -57,10 +47,6 @@ class TicketControl extends React.Component {
   handleDeletingTicket = (id) => {
     const { dispatch } = this.props;
     const action = a.deleteTicket(id);
-    // const action = {
-    //   type: 'DELETE_TICKET',
-    //   id: id
-    // }
     dispatch(action);
     this.setState({selectedTicket: null});
   }
@@ -73,14 +59,6 @@ class TicketControl extends React.Component {
   handleEditTicketInList = (ticketToEdit) => {
     const { dispatch } = this.props;
     const action = a.addTicket(ticketToEdit);
-    // const { id, names, location, issue } = ticketToEdit;
-    // const action = {
-    //   type: 'ADD_TICKET',
-    //   id: id,
-    //   names: names,
-    //   location: location,
-    //   issue: issue
-    // }
     dispatch(action);
     this.setState({
       editing: false,
