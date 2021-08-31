@@ -10,7 +10,7 @@ class TicketControl extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedTicket: null,
+      // selectedTicket: null,
       editing: false
     };
   }
@@ -18,9 +18,16 @@ class TicketControl extends React.Component {
   handleClick = () => {
     if (this.state.selectedTicket != null) {
       this.setState({
-        selectedTicket: null,
+        // selectedTicket: null,
         editing: false
       });
+
+      const {dispatch } = this.props;
+      const action = {
+        type: 'SET_TICKET',
+        ticket: null
+      }
+      dispatch(action);
     } 
     else {
       const { dispatch } = this.props;
@@ -53,7 +60,14 @@ class TicketControl extends React.Component {
 
   handleChangingSelectedTicket = (id) => {
     const selectedTicket = this.props.masterTicketList[id];
-    this.setState({selectedTicket: selectedTicket});
+    // this.setState({selectedTicket: selectedTicket});
+
+    const {dispatch } = this.props;
+    const action = {
+      type: 'SET_TICKET',
+      ticket: selectedTicket
+    }
+    dispatch(action);
   }
 
   handleDeletingTicket = (id) => {
