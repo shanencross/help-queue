@@ -1,11 +1,11 @@
 import React from "react";
-import { connect } from 'react-redux';
 import PropTypes from "prop-types";
 import NewTicketForm from "./NewTicketForm";
 import EditTicketForm from "./EditTicketForm";
 import TicketList from "./TicketList";
 import TicketDetail from "./TicketDetail";
 import * as a from './../actions';
+import { connect } from 'react-redux';
 
 class TicketControl extends React.Component {
   constructor(props) {
@@ -14,6 +14,28 @@ class TicketControl extends React.Component {
       selectedTicket: null,
       editing: false
     };
+  }
+
+  componentDidMount() {
+    this.waitTimeUpdateTimer = setInterval(() =>
+      this.updateTicketElapsedWaitTime(),
+      60000
+    );
+  }
+
+  componentWillUnmount() {
+    this.waitTimeUpdateTimer = setInterval(() =>
+      clearInterval(this.waitTimeUpdateTimer)
+    );
+  }
+
+  updateTicketElapsedWaitTime = () => {
+    const { dispatch } = this.props;
+    Object.values(this.props.masterTicketList).forEach(ticket => {
+      const newFormattedWaitTime = ticket.timeOpen.fromNow(true);
+      const action = a.updateTime(ticket.id, newFormattedWaitTime);
+      dispatch(action);
+    })
   }
 
   handleClick = () => {
@@ -85,7 +107,9 @@ class TicketControl extends React.Component {
       buttonText = "Return to Ticket List";
     } 
     else {
-      currentlyVisibleState = <TicketList ticketList={this.props.masterTicketList} onTicketSelection={this.handleChangingSelectedTicket} />
+      currentlyVisibleState = <TicketList 
+      // ticketList={this.props.masterTicketList} 
+      onTicketSelection={this.handleChangingSelectedTicket} />
       buttonText = "Add Ticket";
     }
     return (
